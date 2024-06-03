@@ -56,6 +56,11 @@ app.get('/', (req, res) => {
     res.send("Api running")
 })
 
+//initial route  i.e root route
+app.get('/desy', (req, res) => { 
+    res.send("Api running in desy server")
+})
+
 //displaying error message on unknown route
 app.use((err,req,res,next)=>{
     res.status(500).send({message:err.message})
