@@ -3,34 +3,36 @@ import validator from 'validator';
 import bcrypt from "bcrypt";
 
 
-
 const userSchema = new mongoose.Schema({
     firstName:{
         type: String,
-        required: [true, "Enter your firstname"],
+        required: [true, "Enter your firstName"],
     },
     lastName:{
         type: String,
-        required: [true, "Enter your lastname"],
+        required: [true, "Enter your lastName"],
     },
-    phoneNumber:{
+    email: {
       type: String,
-      sparse: true, // Allows null or unique values
-      index: true, 
+      required: [true, "Enter your email"],
       unique: true,
+      validate: [validator.isEmail, "Enter a correct email"],
     },
-   email:{
-    type: String,
-    required: [true, "Enter your email"],
-    sparse: true, // Allows null or unique values
-    unique: true,
-    validate: [validator.isEmail, "Enter a correct email"],
-   },
-   password: {
-    type: String,
-    required: [true, "Enter a password"],
-    minlength: [6, "Password must be at least 6 characters long"],
-  },
+    password: {
+      type: String,
+      required: [true, "Enter a password"],
+      minlength: [6, "Password must be at least 6 characters long"],
+    },
+    
+    isAdmin: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    googleId: {
+      type: String,
+      required: true,
+    },
 
   },{
     timestamps:true

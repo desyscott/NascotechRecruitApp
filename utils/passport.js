@@ -11,13 +11,13 @@ dotenv.config();
 
 passport.use(new GoogleStrategy({
     clientID:process.env.GOOGLE_CLIENT_ID, 
-    clientSecret:process.env.GOOGLE_CLIENT_SECRE,
+    clientSecret:process.env.GOOGLE_CLIENT_SECRET,
     callbackURL:"/api/auth/google/callback",
     scope:["profile","email"]
 },
  async (accessToken, refreshToken,callback, profile, done) => {
     // Save user data to the database or perform any other necessary operations
-    const user = await authModel.findOne({googleId:profile.id});
+    const user =await authModel.findOne({ email: profile.emails[0].value });
 
     if(user){
         console.log("user is",user)
@@ -28,7 +28,7 @@ passport.use(new GoogleStrategy({
         const newUser = await authModel.create({
             firstName:nameArray[0],
             lastName:nameArray[1],
-            password:"dhhdhdhhdsf44r",
+            password:"desy1234",
             email:profile.emails[0].value,
             googleId:profile.id
         });

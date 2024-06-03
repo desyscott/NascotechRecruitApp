@@ -11,16 +11,12 @@ import authModel from "../models/authModel.js"
 import {data} from "../data/userData.js"
 
 
-
 const handleErrors = (err) => {
   
   // console.log("handleErrors",err.message, err.code);
-  
      let errors= {
-    firstName: "",
-    lastName: "",
+    fullName: "",
     email: "",
-    phoneNumber:"",
     password: "",
     errMessage:""
   };
@@ -43,20 +39,8 @@ const handleErrors = (err) => {
     return errors;
   }
 
-  // duplicate phoneNumber error
-  if (err.code === 11000 && err.keyPattern.phoneNumber === 1) {
-    errors.phoneNumber = "This number has already been registered";
-    return errors;
-  }
-
-//email not verify error
-  if (err.message === "Email has not been verified check your inbox") {
-    errors.emailVerifyMessage = "Email has not been verified check your inbox";
-    return errors;
-  }
-
   // signup validation errors
-  if (err.message.includes("User validation failed")) {
+  if (err.message.includes("users validation failed")) {
     // console.error(err)
     // console.error(Object.values(err.errors))
     Object.values(err.errors).forEach(({ properties }) => {
@@ -67,6 +51,7 @@ const handleErrors = (err) => {
 };
 
 
+
 router.get("/seed",expressAsyncHandler(async(req,res)=>{
   const userCred = await authModel.insertMany(data.Users);
   res.send({userCred});
@@ -74,23 +59,20 @@ router.get("/seed",expressAsyncHandler(async(req,res)=>{
 
 
 //signup email, password route
-router.post("/signup",expressAsyncHandler(async(req,res)=>{
-    const {firstName,lastName,email,phoneNumber,password}=req.body;
+router.post("/register",expressAsyncHandler(async(req,res)=>{
+    const {firstName,lastName,email,password}=req.body;
   
      try{
-      // const user = await authModel.create({
-      //   firstName,
-      //   lastName,
-      //   phoneNumber,
-      //   email,
-      //   password
-      // });
-  
-    //   res.status(200).json({user});
-      // res.status(200).json( {firstName,lastName,phoneNumber,email,password});
-      console.log({firstName,lastName,phoneNumber,email,password})
+      const user = await authModel.create({
+        firstName,
+        lastName,
+        email,
+        password,
+      });
+      res.status(200).json({user});
+      console.log({fullName,email,password});
      }catch(err){
-         console.log(err.message)
+         console.log(err)
         //  console.log("err",err.keyPattern.email === 1 && "hey")
          const errors = handleErrors(err);
          res.send({errors});
@@ -100,31 +82,32 @@ router.post("/signup",expressAsyncHandler(async(req,res)=>{
 
 
     //signIn route
-  router.post("/signin",expressAsyncHandler(async(req,res)=>{yarn
+  router.post("/sign-in",expressAsyncHandler(async(req,res)=>{
+    const {email,password} = req.body;
 
     if (!email) return sendError(res, "Enter your email");
   
     if (!password) return sendError(res, "Enter your password");
     
     try{
+      // console.log(email,password)
           const user = await authModel.login(email, password);
 
-          const token = createToken(user);
+          // const token = createToken(user);
           res.status(200).send({
             id:user._id,
-            firstName:user.firstName,
-            lastName:user.lastName,
+            fullName:user.fullName,
             email:user.email,
-            token 
+            // token 
             });
       }catch(err){
-      console.log(err)
+      console.log("err",err)
       const errors = handleErrors(err);
       res.status(401).send({ errors });
       console.log(errors)
-
       }
   }))
+
 
 
    //Signin and Signup with Google Account
@@ -160,7 +143,12 @@ router.get("/google",
 passport.authenticate("google",["profile","email"])
 )
 
-//callback route for google to redirect after the profile information is extracted from the code
+// // Google auth routes
+// router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+
+
+// route handles the callback from Google after the user has authenticated.
 router.get("/google/callback",
  passport.authenticate("google",{
     successRedirect:process.env.CLIENT_URL,
