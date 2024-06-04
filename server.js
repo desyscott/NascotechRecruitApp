@@ -11,7 +11,7 @@ import session from "express-session";
 const app = express();
 
 
-const origin = "http://127.0.0.1:5501" 
+const origin = "https://665f86f40a98f05a73613cca--serene-snickerdoodle-6518df.netlify.app" || "http://127.0.0.1:5501"
 
 import  "./utils/passport.js"
 import authRoute  from "./routes/authRoute.js";

@@ -151,7 +151,7 @@ passport.authenticate("google",["profile","email"])
 // route handles the callback from Google after the user has authenticated.
 router.get("/google/callback",
  passport.authenticate("google",{
-    successRedirect:process.env.CLIENT_URL,
+    successRedirect:process.env.REDIRECT_URL,
     failureRedirect:"/google/login/failed"
 }),
 );
