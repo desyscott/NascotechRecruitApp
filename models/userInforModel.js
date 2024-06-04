@@ -54,6 +54,9 @@ file:{
     type: String,
     required: [true, "Enter your file"],
 },
+checkbox:{
+    type: String,
+},
 user:{
     type:mongoose.Schema.Types.ObjectId,
     ref:"users",

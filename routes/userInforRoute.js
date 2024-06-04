@@ -65,7 +65,8 @@ router.post("/register",expressAsyncHandler(async(req,res)=>{
       tech_stacks,
       prog_experience,
       job_availability,
-      file
+      file,
+      checkbox
        }=req.body;
   
      try{
@@ -80,10 +81,11 @@ router.post("/register",expressAsyncHandler(async(req,res)=>{
         tech_stacks,
         prog_experience,
         job_availability,
-        file
+        file,
+        checkbox
       });
       res.status(200).json({userDetails});
-      console.log({fullName,gender,dob,nationality,phoneNumber,email,residence,tech_stacks,prog_experience,job_availability})
+      console.log({fullName,gender,dob,nationality,phoneNumber,email,residence,tech_stacks,prog_experience,job_availability,checkbox})
      }catch(err){
          console.log(err)
         //  console.log("err",err.keyPattern.email === 1 && "hey")

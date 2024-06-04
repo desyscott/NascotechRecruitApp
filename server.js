@@ -16,6 +16,7 @@ const origin = "http://127.0.0.1:5501"
 import  "./utils/passport.js"
 import authRoute  from "./routes/authRoute.js";
 import userInforRoute  from "./routes/userInforRoute.js";
+import contactUsRoute  from "./routes/contactRoute.js";
 import connectDB  from "./db.js";
 
 
@@ -50,6 +51,7 @@ app.use(
 
   app.use("/api/auth",authRoute);
   app.use("/api/registration-portal",userInforRoute);
+  app.use("/api",contactUsRoute);
 
 //initial route  i.e root route
 app.get('/', (req, res) => { 
