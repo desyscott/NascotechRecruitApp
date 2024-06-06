@@ -158,14 +158,13 @@ router.get("/google/callback",
 );
 
 
-router.get("/google/logout",(req, res) => {
-  req.logout((err) => {
-    if (err) {
-      res.send({error:err});
-    }
-    res.send({message:"successfully logged out"});
-});
-});
 
+// Logout route
+router.get('/google/logout', (req, res) => {
+  req.logout((err) => {
+    if (err) { return next(err); }
+    res.redirect(process.env.BASE_URL); // Redirect to home page after logout.
+  });
+});
 
   export default router;
