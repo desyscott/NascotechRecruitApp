@@ -29,7 +29,7 @@ const userInforSchema = new mongoose.Schema({
     },
    email:{
     type: String,
-    required: [true, "Enter your email"],
+    required: [true,"Enter your email"],
     sparse: true, // Allows null or unique values
     unique: true,
     validate: [validator.isEmail, "Enter a correct email"],
@@ -68,5 +68,5 @@ user:{
   });
 
 
-export default mongoose.model('usersInfor',userInforSchema)
+export default mongoose.model('userInformation',userInforSchema)
 

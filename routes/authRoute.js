@@ -9,6 +9,7 @@ const router = express.Router();
 
 import authModel from "../models/authModel.js"
 import {data} from "../data/userData.js"
+import {createToken} from "../utils/generateToken.js"
 
 
 const handleErrors = (err) => {
